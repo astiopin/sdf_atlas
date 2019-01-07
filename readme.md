@@ -2,7 +2,7 @@
 
 Atlas generation tool for the [font rendering demo](https://github.com/astiopin/webgl_fonts).
 
-The algorithm described here.
+The algorithm described [here](https://astiopin.github.io/2019/01/06/sdf-on-gpu.html).
 
 Mostly for educational purposes since the algorithm is performant enough for generating font atlases at runtime.
 
