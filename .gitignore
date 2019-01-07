@@ -1,0 +1,8 @@
+bin/
+*.user
+*~
+#*#
+*.exe
+*.o
+.cquery
+/.cquery_cached_index
