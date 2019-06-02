@@ -47,8 +47,9 @@ void SdfAtlas::allocate_codepoint( uint32_t codepoint ) {
     if ( glyph_idx == 0 ) return;
     const Glyph& g = font->glyphs[ glyph_idx ];
     if ( g.command_count <= 2 ) return;
-
-    float scale = row_height / ( font->glyph_max.y - font->glyph_min.y );
+    
+    float fheight = font->ascent - font->descent;
+    float scale = row_height / fheight;
     float rect_width = ( g.max.x - g.min.x ) * scale + sdf_size * 2.0f;
     float row_and_border = row_height + sdf_size * 2.0f;
 
@@ -86,19 +87,23 @@ void SdfAtlas::allocate_unicode_range( uint32_t start, uint32_t end ) {
 }
 
 void SdfAtlas::draw_glyphs( GlyphPainter& gp ) const {
-    float scale = row_height / ( font->glyph_max.y - font->glyph_min.y );
+    float fheight = font->ascent - font->descent;
+    float scale = row_height / fheight;
     float baseline = -font->descent * scale;
     
     for ( size_t iglyph = 0; iglyph < glyph_rects.size(); ++iglyph ) {
         const GlyphRect& gr = glyph_rects[ iglyph ];
-        F2 glyph_pos = F2 { gr.x0, gr.y0 + baseline } + F2 { sdf_size };
+        float left = font->glyphs[ gr.glyph_idx ].left_side_bearing * scale;
+        F2 glyph_pos = F2 { gr.x0, gr.y0 + baseline } + F2 { sdf_size - left, sdf_size };
         gp.draw_glyph( font, gr.glyph_idx, glyph_pos, scale, sdf_size );
     }
 }
 
 std::string SdfAtlas::json( float tex_height, bool flip_texcoord_y ) const {
-    float scaley = row_height / tex_height / ( font->glyph_max.y - font->glyph_min.y );
-    float scalex = row_height / tex_width / ( font->glyph_max.y - font->glyph_min.y );    
+    float fheight = font->ascent - font->descent;
+    float scaley = row_height / tex_height / fheight; 
+    float scalex = row_height / tex_width / fheight;   
+
     const Glyph& gspace = font->glyphs[ font->glyph_idx( ' ' ) ];
     const Glyph& gx     = font->glyphs[ font->glyph_idx( 'x' ) ];
     const Glyph& gxcap  = font->glyphs[ font->glyph_idx( 'X' ) ];
