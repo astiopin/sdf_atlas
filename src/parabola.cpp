@@ -31,9 +31,9 @@ QbezType qbez_type( F2 np10, F2 np12 ) {
 }
 
 Parabola Parabola::from_line( const Float2& p0, const Float2& p2 ) {
-    float precision = 1e-6;
+    float precision = 1e-16;
     Parabola res;
-    
+
     Float2 pc      = mix( p0, p2, 0.5f );
     Float2 x_axis  = normalize( p2 - p0 );
     float  ldir    = length( p2 - p0 );
