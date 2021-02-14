@@ -22,6 +22,7 @@
 #pragma once
 
 #include "glyph_painter.h"
+#include <string>
 
 struct GlyphRect {
     uint32_t codepoint = 0;

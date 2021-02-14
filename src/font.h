@@ -23,6 +23,7 @@
 #pragma once
 
 #include <vector>
+#include <cstdint>
 #include <unordered_map>
 #include "float2.h"
 #include "mat2d.h"

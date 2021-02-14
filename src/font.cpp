@@ -661,8 +661,8 @@ bool Font::load_ttf_mem( const uint8_t *ttf ) {
     // Rest of glyphs have left side bearing only
     for ( size_t iglyph = 0; iglyph < ( num_glyphs - num_hmtx ); ++iglyph ) {
         const uint8_t *pos = hmtx + num_hmtx * 4 + iglyph * 2;
-        glyphs[ iglyph + num_glyphs ].advance_width = 0.0f;
-        glyphs[ iglyph + num_glyphs ].left_side_bearing = ttf_i16( pos );
+        glyphs[ iglyph + num_hmtx ].advance_width = 0.0f;
+        glyphs[ iglyph + num_hmtx ].left_side_bearing = ttf_i16( pos );
     }
 
     // Reading glyph display lists while calculating glyph max bounding box
