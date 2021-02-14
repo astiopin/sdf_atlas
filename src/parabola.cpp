@@ -30,6 +30,7 @@ QbezType qbez_type( F2 np10, F2 np12 ) {
     return QbezType::Parabola;
 }
 
+/*
 Parabola Parabola::from_line( const Float2& p0, const Float2& p2 ) {
     float precision = 1e-16;
     Parabola res;
@@ -49,6 +50,34 @@ Parabola Parabola::from_line( const Float2& p0, const Float2& p2 ) {
 
     return res;
 }
+*/
+
+Parabola Parabola::from_line( const Float2& p0, const Float2& p1 ) {
+    float px0 = 100.0f;
+    float px1 = 100.0f + 1e-3f;
+
+    float py0 = px0 * px0;
+    float py1 = px1 * px1;
+    float plen = length( F2{ px0, py0 } - F2{ px1, py1 } );
+    float pslope = 2.0f * px0 / sqrtf( 1.0f * 4.0f*px0*px0 );
+    float len = length( p1 - p0 );
+    F2    ldir = ( p1 - p0 ) / len;
+    F2    lndir = perp_right( ldir );
+    float scale = len / plen;
+    F2    rc = p0 + ( ldir * ( px1 - px0 ) + lndir * ( py1 - py0 ) ) * pslope * scale;
+    F2    px = normalize( rc - p0 );
+    F2    py = perp_left( px );
+    F2    pvertex = p0 - px * scale * px0 - py * scale * py0;
+    
+    Parabola res;
+
+    res.mat = Mat2d{ px, py, pvertex };
+    res.scale = scale;
+    res.xstart = px0;
+    res.xend = px1;
+    return res;
+}
+
 
 
 Parabola Parabola::from_qbez( const Float2& p0, const Float2& p1, const Float2& p2 ) {
