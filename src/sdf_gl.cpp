@@ -113,12 +113,12 @@ void SdfGl::render_sdf( F2 tex_size, const std::vector<SdfVertex> &fill_vertices
 
         // Front face (CCW) increases stencil values
         glCullFace( GL_FRONT );
-        glStencilOp( GL_KEEP, GL_INCR, GL_INCR );
+        glStencilOp( GL_KEEP, GL_INCR_WRAP, GL_INCR_WRAP );
         glDrawArrays( GL_TRIANGLES, 0, fcount );
 
         // Back face (CW) decreaces
         glCullFace( GL_BACK );
-        glStencilOp( GL_KEEP, GL_DECR, GL_DECR );
+        glStencilOp( GL_KEEP, GL_DECR_WRAP, GL_DECR_WRAP );
         glDrawArrays( GL_TRIANGLES, 0, fcount );
 
         glDisable( GL_CULL_FACE );    
@@ -130,7 +130,7 @@ void SdfGl::render_sdf( F2 tex_size, const std::vector<SdfVertex> &fill_vertices
         glEnable( GL_BLEND );
         glBlendEquation( GL_FUNC_ADD );
         glBlendFunc( GL_ONE_MINUS_DST_COLOR, GL_ZERO );
-        glStencilFunc( GL_EQUAL, 1, 0xff );
+        glStencilFunc( GL_NOTEQUAL, 0, 0xff );
         glStencilOp( GL_ZERO, GL_ZERO, GL_ZERO );
         glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
         ufill.transform_matrix.setv( mid );
