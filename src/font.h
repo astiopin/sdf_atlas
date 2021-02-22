@@ -73,6 +73,9 @@ struct Font {
     // Glyph map: codepoint -> glyph index 
     std::unordered_map<uint32_t, int>    glyph_map;
 
+    // Codepoint map: glyph index -> codepoint
+    std::unordered_map<int, std::vector<uint32_t>> cp_map;    
+
     // Glyph array
     std::vector<Glyph>                   glyphs;
 

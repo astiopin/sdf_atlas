@@ -694,6 +694,17 @@ bool Font::load_ttf_mem( const uint8_t *ttf ) {
         if ( iswspace( codepoint ) ) g.char_type = Glyph::Space;
     }
 
+    // Filling codepoint map
+    for ( const std::pair<uint32_t, int>& cgpair : glyph_map ) {
+        auto it = cp_map.find( cgpair.second );
+        if ( it == cp_map.end() ) {
+            std::vector<uint32_t> v { cgpair.first };
+            cp_map.insert( { cgpair.second, std::move( v ) } );
+        } else {
+            it->second.push_back( cgpair.second );
+        }        
+    }    
+
     // Some fonts store kerning information in "kern" table, reading it
     fill_kern( *this, ttf, scale );
 

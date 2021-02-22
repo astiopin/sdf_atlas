@@ -160,15 +160,31 @@ std::string SdfAtlas::json( float tex_height, bool flip_texcoord_y ) const {
 
     for ( auto kv : font->kern_map ) {
         uint32_t kern_pair = kv.first;
-        float kern_value = kv.second;
-        uint32_t kern_first = kern_pair & 0xffff;
-        uint32_t kern_second = ( kern_pair >> 16 ) & 0xffff;
-        bool first_found = codepoints.find( kern_first ) != codepoints.end();
-        bool second_found = codepoints.find( kern_second ) != codepoints.end();
-        if ( first_found && second_found ) {
-            char uckern[ 64 ];
-            snprintf( uckern, 64, "        \"\\u%04x\\u%04x\" : ", kern_first, kern_second );
-            ss << uckern << kern_value << "," << std::endl;
+        float kern_value = kv.second * scalex;
+
+        int kern_first_idx = ( kern_pair >> 16 ) & 0xffff;        
+        int kern_second_idx = kern_pair & 0xffff;
+
+        auto it1 = font->cp_map.find( kern_first_idx );
+        auto it2 = font->cp_map.find( kern_second_idx );
+
+        if ( it1 == font->cp_map.end() || it2 == font->cp_map.end() ) {
+            continue;
+        }
+
+        const std::vector<uint32_t>& v1 = it1->second;
+        const std::vector<uint32_t>& v2 = it2->second;
+
+        for ( uint32_t kern_first : v1 ) {
+            for ( uint32_t kern_second : v2 ) {
+                bool first_found = codepoints.find( kern_first ) != codepoints.end();
+                bool second_found = codepoints.find( kern_second ) != codepoints.end();
+                if ( first_found && second_found ) {
+                    char uckern[ 64 ];
+                    snprintf( uckern, 64, "        \"\\u%04x\\u%04x\" : ", kern_first, kern_second );
+                    ss << uckern << kern_value << "," << std::endl;
+                }
+            }
         }
     }
 
