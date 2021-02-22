@@ -1,4 +1,4 @@
-const char *line_vsh = R"(  // "
+const char * const line_vsh = R"(  // "
 /*
  * Copyright (c) 2019 Anton Stiopin astiopin@gmail.com
  *

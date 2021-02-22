@@ -1,4 +1,4 @@
-const char *shape_vsh = R"(  // "
+const char * const shape_vsh = R"(  // "
 /*
  * Copyright (c) 2019 Anton Stiopin astiopin@gmail.com
  *
