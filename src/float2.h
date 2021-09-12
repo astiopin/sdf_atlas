@@ -202,7 +202,7 @@ inline Float2 perp_left( const Float2& v ) {
 }
 
 inline Float2 clamp( const Float2& v, const Float2& vmin, const Float2& vmax ) {
-    return max( min( v, vmin ), vmax );
+    return max( min( v, vmax ), vmin );
 }
 
 inline Float2 vpow( const Float2& v, float p ) {

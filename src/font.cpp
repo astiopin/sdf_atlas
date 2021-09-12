@@ -683,7 +683,7 @@ bool Font::load_ttf_mem( const uint8_t *ttf ) {
     }
 
     // Reading glyph types
-    for ( const std::pair<uint32_t, int>& cgpair : glyph_map ) {
+    for ( std::pair<uint32_t, int> cgpair : glyph_map ) {
         uint32_t codepoint = cgpair.first;
         int iglyph = cgpair.second;
         if ( iglyph < 0 ) continue;
@@ -695,7 +695,7 @@ bool Font::load_ttf_mem( const uint8_t *ttf ) {
     }
 
     // Filling codepoint map
-    for ( const std::pair<uint32_t, int>& cgpair : glyph_map ) {
+    for ( std::pair<uint32_t, int> cgpair : glyph_map ) {
         auto it = cp_map.find( cgpair.second );
         if ( it == cp_map.end() ) {
             std::vector<uint32_t> v { cgpair.first };

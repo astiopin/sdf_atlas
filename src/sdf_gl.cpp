@@ -106,22 +106,12 @@ void SdfGl::render_sdf( F2 tex_size, const std::vector<SdfVertex> &fill_vertices
         ufill.transform_matrix.setv( mscreen3 );
     
         glEnable( GL_STENCIL_TEST );
-        glEnable( GL_CULL_FACE );
         glColorMask( GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE );
 
         glStencilFunc( GL_ALWAYS, 0, 0xff );
-
-        // Front face (CCW) increases stencil values
-        glCullFace( GL_FRONT );
-        glStencilOp( GL_KEEP, GL_INCR_WRAP, GL_INCR_WRAP );
-        glDrawArrays( GL_TRIANGLES, 0, fcount );
-
-        // Back face (CW) decreaces
-        glCullFace( GL_BACK );
-        glStencilOp( GL_KEEP, GL_DECR_WRAP, GL_DECR_WRAP );
-        glDrawArrays( GL_TRIANGLES, 0, fcount );
-
-        glDisable( GL_CULL_FACE );    
+        glStencilOpSeparate( GL_FRONT, GL_KEEP, GL_INCR_WRAP, GL_INCR_WRAP );
+        glStencilOpSeparate( GL_BACK, GL_KEEP, GL_DECR_WRAP, GL_DECR_WRAP );
+        glDrawArrays( GL_TRIANGLES, 0, fcount );        
 
         // Drawing full screen quad, inverting colors where stencil == 1
 
